@@ -20,7 +20,7 @@
 
 
 <body>
-    <div class="container-fluid d-flex justify-content-center d-flex align-items-center my-5 pl-2">
+    <div class="container-fluid d-flex justify-content-center d-flex align-items-center my-4">
         <div class="row no-gutters">
 
             <!-- Leftmost Small Column -->
@@ -130,7 +130,7 @@
                     </div>
 
                     <!-- Where the cards are -->
-                    <div class="container py-5">
+                    <div class="container card-container py-4">
                         <!-- <div class="card flex-row each-card">
                             <img class="fluid-image rounded-left" src="./lasagna.jpg" min-height="100%"
                                 alt="Card image">
@@ -144,8 +144,112 @@
                                     <p class="card-text date-c">Recipe Created On: July 7, 2019</p>
                                 </div> -->
 
-                        <!-- Footer card icons -->
-                        <!-- <div class="card-footer w-100 py-1 font-weight-bold">Duration: <span
+                        <!-- <div class="card mb-3 ml-3">
+                            <div class="row no-gutters">
+                                <div class="col-auto"><img src="./lasagna.jpg" class="img-fluid" width="auto"
+                                        height="auto" alt=""></div>
+                                <div class="col-10">
+                                    <div class="card-block px-2">
+                                        <h4 class="card-title font-weight-bold">%name%</h4>
+                                        <p class="card-text">%description%</p>
+                                        <p class="card-text date-c">%date%</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer w-100 font-weight-bold p-0">
+                                <div class="d-flex justify-content-center d-flex align-items-center">
+                                    <div class="col-9">
+                                        <p style="display:inline">Duration: <span class="minutes">%duration%</span>
+                                            minutes. Servings: <span class="servings">%servings%</span></p>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <span class="enlarge-icon">
+                                            <button type="button" class="btn enlarge-icon resize-icon"
+                                                style="font-size:77%;padding:0;padding-top:25%" data-toggle="modal"
+                                                data-target=".bd-example-modal-2g">
+                                                <ion-icon name="resize"></ion-icon>
+                                            </button>
+                                        </span>
+
+                                        <span class="enlarge-icon">
+                                            <ion-icon name="trash"></ion-icon>
+                                        </span><span class="enlarge-icon">
+                                            <ion-icon name="create"></ion-icon>
+                                        </span></div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+
+                    <div class="modal fade bd-example-modal-2g" tabindex="-1" role="dialog"
+                        aria-labelledby="myLargeModalLabel2" aria-hidden="true">
+                        <div class="modal-dialog modal-2g">
+                            <div class="modal-content bg-light text-dark">
+                                <div class="modal-header bg-dark text-white">
+                                    <img src="./recipe-icon.png" alt="chef-icon" class="icon-title">
+                                    <h5 class="col-9 modal-title text-center font-weight-bold ">Full Recipe</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body text-center font-weight-bold">
+                                    <form>
+                                        <div class="card">
+                                            <div class="form-group row">
+                                                <label for="" class="col-sm-12 col-form-label">Recipe Name
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <p class="card-text full-name">3</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="" class="col-sm-12 col-form-label">Description
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <p class="card-text full-description">3</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="" class="col-sm-12 col-form-label">Ingredients
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <p class="card-text full-ingredients">3</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="" class="col-sm-12 col-form-label">Directions
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <p class="card-text full-directions">3</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="" class="col-sm-12 col-form-label">Total Cook Time
+                                                    (mins):</label>
+                                                <div class="col-sm-12">
+                                                    <p class="card-text full-time">3</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="" class="col-sm-12 col-form-label">Number Of Servings:
+                                                </label>
+                                                <div class="col-sm-12">
+                                                    <p class="card-text full-servings">3</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                        </div>
+                                        <form>
+                                </div>
+                            </div>
+
+
+                            <!-- Footer card icons -->
+                            <!-- <div class="card-footer w-100 py-1 font-weight-bold">Duration: <span
                                         class="minutes">45</span> minutes.
                                     <pre
                                         style="display:inline;">  Servings: <span class="servings">2</span> <span class="enlarge-icon"><ion-icon name="resize"></ion-icon></span><span class="enlarge-icon"><ion-icon name="trash"></ion-icon></span><span class="enlarge-icon"><ion-icon name="create"></ion-icon></span></pre>
@@ -153,25 +257,24 @@
                             </div>
                         </div>
                     </div> -->
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
 
 
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-            crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
-        <script src="./app.js"></script>
+                <!-- Optional JavaScript -->
+                <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                    crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+                    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+                    crossorigin="anonymous"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                    crossorigin="anonymous"></script>
+                <script src="./app.js"></script>
 </body>
 
 </html>

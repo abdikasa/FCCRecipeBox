@@ -19,6 +19,7 @@ html, body {
 
 .orange {
     color: #fe9b58;
+    border-bottom: 7px solid #fe9b58;
 }
 
 #num-of-tasks {
@@ -36,8 +37,18 @@ html, body {
     /* background: rgb(255, 255, 255, 0.5); */
 }
 
+
+.btn-add {
+    color: #14252C;
+    color: #fff;
+}
+
+.btn-add:hover {
+    color: #fe9b58;
+}
+
 .enlarge-icon:hover {
-    color: blue;
+    color: #fe9b58;
 }
 
 .form-group {
@@ -63,6 +74,10 @@ label {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
+.right-div {
+    /* background-color: #ffceac; */
+}
+
 .title h2 {
     font-weight: 700;
     font-size: 2.2em;
@@ -80,7 +95,7 @@ label {
 }
 
 .time>.dmy:hover {
-    border-bottom: 1.5px solid black;
+    border-bottom: 7px solid #fe9b58;
     padding-bottom: 0.3rem;
 }
 
@@ -100,7 +115,7 @@ label {
 .wel-msg h3 {
     font-size: 400%;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.1;
 }
 
 .icon-div {
