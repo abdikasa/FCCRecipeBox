@@ -119,7 +119,7 @@ let UICtrl = (function () {
             } else {
                 let container = document.querySelector(DOMStrings.container);
 
-                html = '<div class="card mb-3 ml-3"><div class="row no-gutters"><div class="col-auto"><img src="./lasagna.jpg" class="img-fluid" width="auto" height="auto" alt=""></div><div class="col-10"><div class="card-block px-2"><h4 class="card-title font-weight-bold">%name%</h4><p class="card-text">%description%</p><p class="card-text date-c">%date%</p></div></div></div><div class="card-footer w-100 font-weight-bold p-0"><div class="d-flex justify-content-center d-flex align-items-center"><div class="col-9"><p style="display:inline">Duration: <span class="minutes">%duration%</span> minutes. Servings: <span class="servings">%servings%</span></p></div><div class="col-3"><span class="enlarge-icon"><button type="button" class="btn enlarge-icon id-%id%" style="font-size:77%;padding:0;padding-top:25%" data-toggle="modal" data-target=".bd-example-modal-2g"><ion-icon name="resize" class="resize-icon"></ion-icon></button></span><span class="enlarge-icon"><ion-icon name="trash"></ion-icon></span><span class="enlarge-icon"><ion-icon name="create"></ion-icon></span></div></div></div></div'
+                html = '<div class="card mb-3 ml-3"><div class="row no-gutters"><div class="col-auto"><img src="./lasagna.jpg" class="img-fluid" width="auto" height="auto" alt=""></div><div class="col-10"><div class="card-block px-2"><h4 class="card-title font-weight-bold">%name%</h4><p class="card-text">%description%</p><p class="card-text date-c">%date%</p></div></div></div><div class="card-footer w-100 font-weight-bold p-0"><div class="d-flex justify-content-center d-flex align-items-center"><div class="col-9"><p style="display:inline">Duration: <span class="minutes">%duration%</span> minutes. Servings: <span class="servings">%servings%</span></p></div><div class="col-3"><span class="enlarge-icon"><button type="button" class="btn enlarge-icon id-%id%" style="font-size:77%;padding:0;padding-top:25%" data-target=".bd-example-modal-2g"><ion-icon name="resize" class="resize-icon"></ion-icon></button></span><span class="enlarge-icon"><ion-icon name="trash"></ion-icon></span><span class="enlarge-icon"><ion-icon name="create"></ion-icon></span></div></div></div></div'
 
                 // '<div class="card mb-3 ml-3"><div class="row no-gutters"><div class="col-auto"><img src="./lasagna.jpg" class="img-fluid" width="auto" height="auto" alt=""></div><div class="col-10"><div class="card-block px-2"> <h4 class="card-title font-weight-bold">%name%</h4><p class="card-text">%description%</p><p class="card-text date-c">%date%</p></div></div></div><div class="card-footer w-100 font-weight-bold p-0"><div class="d-flex justify-content-center d-flex align-items-center"><div class="col-9"><p style="display:inline">Duration: <span class="minutes">%duration%</span> minutes. Servings: <span class="servings">%servings%</span></p></div><div class="col-3"><span class="enlarge-icon" style="font-size:120%;margin-top:2%"><ion-icon name="resize"></ion-icon></span><span class="enlarge-icon"><ion-icon name="trash"></ion-icon></span><span class="enlarge-icon"><ion-icon name="create"></ion-icon></span></div></div></div></div>'
 
@@ -147,6 +147,8 @@ let UICtrl = (function () {
             nodeArray.forEach(function (item) {
                 item.value = "";
             })
+
+            nodeArray[0].focus();
 
         },
 
@@ -326,6 +328,7 @@ let link = (function (inside, outside) {
         document.addEventListener("click", function (e) {
             if (e.target.classList.value.includes(DOMStrings.full_recipe)) {
                 seeFullRecipe(e);
+                $('.bd-example-modal-2g').modal("show")
             }
         })
     }
