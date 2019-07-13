@@ -39,8 +39,9 @@ let internalCtrl = (function () {
             let condition1 = name.trim().length > 0 && description.trim().length > 0;
             let condition2 = ingredients.trim().length > 0 && directions.trim().length > 0;
             let condition3 = duration.trim().length > 0 && servings.trim().length > 0;
+            let condition4 = this.checkDurationAndServings();
 
-            if (condition1 && condition2 && condition3) {
+            if (condition1 && condition2 && condition3 && condition4) {
                 recipe = new Recipe(name, description, ingredients, directions, duration, servings, id);
                 data.cookBook.push(recipe)
             }
@@ -56,6 +57,16 @@ let internalCtrl = (function () {
                 }
             }
             return recipe;
+        },
+
+        checkDurationAndServings: function () {
+            let durat = document.querySelector("#duration");
+            let servings = document.querySelector("#numOfServings");
+            let duratCondition = (Number(durat.value) >= Number(durat.getAttribute("min")) && (Number(durat.value) <= Number(durat.getAttribute("max"))));
+            let servingsCondition = (Number(servings.value) >= Number(servings.getAttribute("min")) && (Number(servings.value) <= Number(servings.getAttribute("max"))));
+
+            return duratCondition && servingsCondition;
+
         }
     }
 
@@ -80,7 +91,8 @@ let UICtrl = (function () {
         full_ingredients: '.full-ingredients',
         full_directions: '.full-directions',
         full_time: '.full-time',
-        full_servings: '.full-servings'
+        full_servings: '.full-servings',
+        id: 'id-'
     };
 
 
@@ -105,7 +117,6 @@ let UICtrl = (function () {
             if (recipe === undefined) {
 
             } else {
-
                 let container = document.querySelector(DOMStrings.container);
 
                 html = '<div class="card mb-3 ml-3"><div class="row no-gutters"><div class="col-auto"><img src="./lasagna.jpg" class="img-fluid" width="auto" height="auto" alt=""></div><div class="col-10"><div class="card-block px-2"><h4 class="card-title font-weight-bold">%name%</h4><p class="card-text">%description%</p><p class="card-text date-c">%date%</p></div></div></div><div class="card-footer w-100 font-weight-bold p-0"><div class="d-flex justify-content-center d-flex align-items-center"><div class="col-9"><p style="display:inline">Duration: <span class="minutes">%duration%</span> minutes. Servings: <span class="servings">%servings%</span></p></div><div class="col-3"><span class="enlarge-icon"><button type="button" class="btn enlarge-icon id-%id%" style="font-size:77%;padding:0;padding-top:25%" data-toggle="modal" data-target=".bd-example-modal-2g"><ion-icon name="resize" class="resize-icon"></ion-icon></button></span><span class="enlarge-icon"><ion-icon name="trash"></ion-icon></span><span class="enlarge-icon"><ion-icon name="create"></ion-icon></span></div></div></div></div'
@@ -123,19 +134,34 @@ let UICtrl = (function () {
                 container.insertAdjacentHTML("beforeend", html);
             }
         },
+
+        resetUserInput: function () {
+            //1. get the values from the input tag.
+            let nodes = document.querySelectorAll(DOMStrings.name + ',' + DOMStrings.description + ',' + DOMStrings.ingredients + ',' + DOMStrings.directions + ',' + DOMStrings.duration + ',' + DOMStrings.servings);
+
+            //2. convert to array
+            let nodeArray = Array.prototype.slice.call(nodes);
+
+            //3.Loop through the array
+
+            nodeArray.forEach(function (item) {
+                item.value = "";
+            })
+
+        },
+
         updateCount: function () {
             let count = document.querySelector(DOMStrings.container).children.length;
             let spanCount = document.querySelector(DOMStrings.num_of_tasks);
             let array = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
 
-            if(array[count] === undefined){
-                spanCount.textContent= ` ${count} `
-            }else{
+            if (array[count] === undefined) {
+                spanCount.textContent = ` ${count} `
+            } else {
                 spanCount.textContent = ` ${array[count]} `;
             }
 
             // 
-
             // if (array.indexOf(count.textContent.trim()) >= 0) {
             //     count.textContent = " " + array[array.indexOf(count.textContent.trim()) + 1] + " ";
             //     console.log(count.textContent)
@@ -147,6 +173,15 @@ let UICtrl = (function () {
             // }
 
 
+        },
+
+        resetValues: function () {
+            document.querySelector(DOMStrings.full_name).textContent = "";
+            document.querySelector(DOMStrings.full_description).textContent = ""
+            document.querySelector(DOMStrings.full_ingredients).textContent = "";
+            document.querySelector(DOMStrings.full_directions).textContent = "";
+            document.querySelector(DOMStrings.full_time).textContent = "";
+            document.querySelector(DOMStrings.full_servings).textContent = "";
         },
 
         getTodayDate: function () {
@@ -173,7 +208,7 @@ let UICtrl = (function () {
             //get Id from the targeted card
             let item;
 
-            if (e.target.parentElement.classList.value.includes("id-")) {
+            if (e.target.parentElement.classList.value.includes(DOMStrings.id)) {
                 item = e.target.parentElement.classList.item(e.target.parentElement.classList.length - 1);
             }
             console.log(item); // returns id-0
@@ -190,10 +225,42 @@ let UICtrl = (function () {
             // full_time: '.full-time',
             // full_servings: '.full-servings'
 
+
+            //Reset values that were already there by chance.
+            this.resetValues();
+
             document.querySelector(DOMStrings.full_name).textContent = recipe.name;
             document.querySelector(DOMStrings.full_description).textContent = recipe.description;
-            document.querySelector(DOMStrings.full_ingredients).textContent = recipe.ingredients;
-            document.querySelector(DOMStrings.full_directions).textContent = recipe.directions;
+
+            //Create a function here that takes these params later, they repeat the same values.
+            //Format the ingredients.
+            let ingredients = recipe.ingredients.trim().split("/");
+            let ul = document.createElement("ul");
+            ul.className = 'text-left'
+            document.querySelector(DOMStrings.full_ingredients).appendChild(ul);
+            for (let i = 0; i < ingredients.length; i++) {
+                let item = ingredients[i].trim();
+                if (item !== "") {
+                    let li = document.createElement("li");
+                    li.textContent = item;
+                    ul.appendChild(li);
+                }
+            }
+
+            //Format the directions
+            let directions = recipe.directions.trim().split("/");
+            let ol = document.createElement("ol");
+            ol.className = 'text-left'
+            document.querySelector(DOMStrings.full_directions).appendChild(ol);
+            for (let i = 0; i < directions.length; i++) {
+                let item = directions[i].trim();
+                if (item !== "") {
+                    let li = document.createElement("li");
+                    li.textContent = item;
+                    ol.appendChild(li);
+                }
+            }
+
             document.querySelector(DOMStrings.full_time).textContent = recipe.duration;
             document.querySelector(DOMStrings.full_servings).textContent = recipe.servings;
 
@@ -217,11 +284,14 @@ let link = (function (inside, outside) {
 
         //Add to UI/external
         outside.addItemToUI(recipe);
+
+        outside.resetUserInput();
         outside.updateCount();
     }
 
     let match_ID_With_Recipe = function (e) {
-        if (e.target.classList.value.includes("resize-icon")) {
+        let DOMStrings = outside.getDOMStrings();
+        if (e.target.classList.value.includes(DOMStrings.full_recipe)) {
             let data = inside.retreiveData();
             let splitID = outside.getFullRecipe(e);
             let id = splitID[1];

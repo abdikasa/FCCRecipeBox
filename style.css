@@ -9,6 +9,10 @@ html, body {
     /* min-height: 100vh; */
 }
 
+.recipe-full {
+    border-bottom: 3px solid black;
+}
+
 .left-div, .right-div {
     background-color: #fff;
     /* border: 1px solid black; */
@@ -20,6 +24,10 @@ html, body {
 .orange {
     color: #fe9b58;
     border-bottom: 7px solid #fe9b58;
+}
+
+.highlight {
+    color: #fe9b58;
 }
 
 #num-of-tasks {
@@ -36,7 +44,6 @@ html, body {
 .right-div {
     /* background: rgb(255, 255, 255, 0.5); */
 }
-
 
 .btn-add {
     color: #14252C;
