@@ -92,7 +92,10 @@ let UICtrl = (function () {
         full_directions: '.full-directions',
         full_time: '.full-time',
         full_servings: '.full-servings',
-        id: 'id-'
+        id: 'id-',
+        create_icon: 'create-icon',
+        add_btn: "button.btn-add",
+        delete_trash: 'delete-trash'
     };
 
 
@@ -119,9 +122,9 @@ let UICtrl = (function () {
             } else {
                 let container = document.querySelector(DOMStrings.container);
 
-                html = '<div class="card mb-3 ml-3"><div class="row no-gutters"><div class="col-auto"><img src="./lasagna.jpg" class="img-fluid" width="auto" height="auto" alt=""></div><div class="col-10"><div class="card-block px-2"><h4 class="card-title font-weight-bold">%name%</h4><p class="card-text">%description%</p><p class="card-text date-c">%date%</p></div></div></div><div class="card-footer w-100 font-weight-bold p-0"><div class="d-flex justify-content-center d-flex align-items-center"><div class="col-9"><p style="display:inline">Duration: <span class="minutes">%duration%</span> minutes. Servings: <span class="servings">%servings%</span></p></div><div class="col-3"><span class="enlarge-icon"><button type="button" class="btn enlarge-icon id-%id%" style="font-size:77%;padding:0;padding-top:25%" data-target=".bd-example-modal-2g"><ion-icon name="resize" class="resize-icon"></ion-icon></button></span><span class="enlarge-icon"><ion-icon name="trash"></ion-icon></span><span class="enlarge-icon"><ion-icon name="create"></ion-icon></span></div></div></div></div'
+                html = '<div class="card mb-3 ml-3"><div class="row no-gutters"><div class="col-auto"><img src="./lasagna.jpg" class="img-fluid" width="auto" height="auto" alt=""></div><div class="col-10"><div class="card-block px-2"><h4 class="card-title font-weight-bold">%name%</h4><p class="card-text">%description%</p><p class="card-text date-c">%date%</p></div></div></div><div class="card-footer w-100 font-weight-bold p-0"><div class="d-flex justify-content-center d-flex align-items-center"><div class="col-9"><p style="display:inline">Duration: <span class="minutes">%duration%</span> minutes. Servings: <span class="servings">%servings%</span></p></div><div class="col-3"><span class="enlarge-icon"><button type="button" class="btn enlarge-icon id-%id%" style="font-size:77%;padding:0;padding-top:25%" data-target=".bd-example-modal-2g"><ion-icon name="resize" class="resize-icon"></ion-icon></button></span><span class="enlarge-icon"><ion-icon name="trash" class="delete-trash"></ion-icon></span><span class="enlarge-icon"><button type="button" class="btn enlarge-icon" style="font-size:77%;padding:0;padding-top:24%" data-target=".bd-example-modal-lg"><ion-icon name="create" class="create-icon"></ion-icon></button></span></div></div></div></div'
 
-                // '<div class="card mb-3 ml-3"><div class="row no-gutters"><div class="col-auto"><img src="./lasagna.jpg" class="img-fluid" width="auto" height="auto" alt=""></div><div class="col-10"><div class="card-block px-2"> <h4 class="card-title font-weight-bold">%name%</h4><p class="card-text">%description%</p><p class="card-text date-c">%date%</p></div></div></div><div class="card-footer w-100 font-weight-bold p-0"><div class="d-flex justify-content-center d-flex align-items-center"><div class="col-9"><p style="display:inline">Duration: <span class="minutes">%duration%</span> minutes. Servings: <span class="servings">%servings%</span></p></div><div class="col-3"><span class="enlarge-icon" style="font-size:120%;margin-top:2%"><ion-icon name="resize"></ion-icon></span><span class="enlarge-icon"><ion-icon name="trash"></ion-icon></span><span class="enlarge-icon"><ion-icon name="create"></ion-icon></span></div></div></div></div>'
+                // '<div class="card mb-3 ml-3"><div class="row no-gutters"><div class="col-auto"><img src="./lasagna.jpg" class="img-fluid" width="auto" height="auto" alt=""></div><div class="col-10"><div class="card-block px-2"> <h4 class="card-title font-weight-bold">%name%</h4><p class="card-text">%description%</p><p class="card-text date-c">%date%</p></div></div></div><div class="card-footer w-100 font-weight-bold p-0"><div class="d-flex justify-content-center d-flex align-items-center"><div class="col-9"><p style="display:inline">Duration: <span class="minutes">%duration%</span> minutes. Servings: <span class="servings">%servings%</span></p></div><div class="col-3"><span class="enlarge-icon" style="font-size:120%;margin-top:2%"><ion-icon name="resize"></ion-icon></span><span class="enlarge-icon"><ion-icon name="trash"></ion-icon></span><span class="enlarge-icon"><ion-icon name="create" class="create-icon"></ion-icon></span></div></div></div></div>'
 
                 let date = this.getTodayDate();
                 html = html.replace("%name%", recipe.name);
@@ -199,7 +202,7 @@ let UICtrl = (function () {
             return date;
         },
 
-        getFullRecipe: function (e) {
+        getFullRecipe: function (e, string) {
             // full_name: '.full-name',
             // full_description: '.full-description',
             // full_ingredients: '.full-ingredients',
@@ -209,10 +212,14 @@ let UICtrl = (function () {
 
             //get Id from the targeted card
             let item;
-
-            if (e.target.parentElement.classList.value.includes(DOMStrings.id)) {
+            if (e.target.parentElement.classList.value.includes(string)) { //DOMStrings.id
                 item = e.target.parentElement.classList.item(e.target.parentElement.classList.length - 1);
+            } else if (e.target.parentElement.parentElement.parentElement.children[0].children[0].className.includes(string)) {
+                item = e.target.parentElement.parentElement.parentElement.children[0].children[0].classList.item(e.target.parentElement.parentElement.parentElement.children[0].children[0].classList.length - 1);
+            } else if (e.target.parentElement.parentElement.children[0].children[0].className.includes(string)) {
+                item = e.target.parentElement.parentElement.children[0].children[0].classList.item(e.target.parentElement.parentElement.children[0].children[0].classList.length - 1);
             }
+
             console.log(item); // returns id-0
             let split = item.split("-");
 
@@ -228,7 +235,7 @@ let UICtrl = (function () {
             // full_servings: '.full-servings'
 
 
-            //Reset values that were already there by chance.
+            //Clears the modal's values.
             this.resetValues();
 
             document.querySelector(DOMStrings.full_name).textContent = recipe.name;
@@ -266,6 +273,15 @@ let UICtrl = (function () {
             document.querySelector(DOMStrings.full_time).textContent = recipe.duration;
             document.querySelector(DOMStrings.full_servings).textContent = recipe.servings;
 
+        },
+
+        editRecipeUI: function (recipe) {
+            document.querySelector(DOMStrings.name).value = recipe.name;
+            document.querySelector(DOMStrings.description).value = recipe.description;
+            document.querySelector(DOMStrings.ingredients).value = recipe.ingredients;
+            document.querySelector(DOMStrings.directions).value = recipe.directions;
+            document.querySelector(DOMStrings.duration).value = recipe.duration;
+            document.querySelector(DOMStrings.servings).value = recipe.servings;
         }
     }
 })();
@@ -291,11 +307,11 @@ let link = (function (inside, outside) {
         outside.updateCount();
     }
 
-    let match_ID_With_Recipe = function (e) {
-        let DOMStrings = outside.getDOMStrings();
-        if (e.target.classList.value.includes(DOMStrings.full_recipe)) {
+    let match_ID_With_Recipe = function (e, string, string2) {
+        //let DOMStrings = outside.getDOMStrings(); //  let DOMStrings = outside.getDOMStrings();
+        if (e.target.classList.value.includes(string)) { //DOMStrings.full_recipe
             let data = inside.retreiveData();
-            let splitID = outside.getFullRecipe(e);
+            let splitID = outside.getFullRecipe(e, string2);
             let id = splitID[1];
             let result = inside.searchForMatch(id, data);
             return result;
@@ -303,9 +319,39 @@ let link = (function (inside, outside) {
     }
 
     let seeFullRecipe = function (e) {
-        let matchedRecipe = match_ID_With_Recipe(e);
-        outside.getFullRecipeHelper(matchedRecipe);
+        let DOMStrings = outside.getDOMStrings();
+        let stmt = match_ID_With_Recipe(e, DOMStrings.full_recipe, DOMStrings.id);
+        outside.getFullRecipeHelper(stmt);
     }
+
+    let editRecipe = function (e) {
+        let DOMStrings = outside.getDOMStrings();
+        let stmt = match_ID_With_Recipe(e, DOMStrings.create_icon, DOMStrings.id);
+        console.log("Edit recipe")
+        $('.bd-example-modal-lg').modal("show");
+        document.querySelector(".modal-title").textContent = "Edit A Recipe";
+        outside.editRecipeUI(stmt);
+    }
+
+    let deleteRecipe = function (e) {
+        let DOMStrings = outside.getDOMStrings();
+        let stmt = match_ID_With_Recipe(e, DOMStrings.delete_trash, DOMStrings.id);
+
+    }
+
+    let checkForMatch = function (recipe) {
+        let data = inside.retreiveData();
+
+        //check to see if passed recipe is inside the array cookbook
+        //if yes, use splice, if not, do nothing.
+    }
+
+
+
+    // let seeFullRecipe = function (e) {
+    //     let matchedRecipe = match_ID_With_Recipe(e);
+    //     outside.getFullRecipeHelper(matchedRecipe);
+    // }
 
 
 
@@ -317,7 +363,11 @@ let link = (function (inside, outside) {
         let DOMStrings = outside.getDOMStrings();
 
         document.querySelector(DOMStrings.save_btn).addEventListener("click", function () {
-            addToScreen();
+            if (document.querySelector(".modal-title").textContent === "Edit A Recipe") {
+                console.log("Delete first, then add")
+            } else {
+                addToScreen();
+            }
         })
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -325,11 +375,23 @@ let link = (function (inside, outside) {
             outside.getTodayDate();
         })
 
+        document.querySelector(DOMStrings.add_btn).addEventListener("click", function () {
+            console.log("Add Recipe")
+            outside.resetUserInput();
+            document.querySelector(".modal-title").textContent = "Add A Recipe";
+        })
+
+
         document.addEventListener("click", function (e) {
             if (e.target.classList.value.includes(DOMStrings.full_recipe)) {
                 seeFullRecipe(e);
                 $('.bd-example-modal-2g').modal("show")
+            } else if (e.target.parentElement.parentElement.parentElement.children[0].children[0].className.includes(DOMStrings.id)) {
+                editRecipe(e);
             }
+            // else if (e.target.className.includes(DOMStrings.delete_trash)) {
+
+            // }
         })
     }
 
