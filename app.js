@@ -397,8 +397,8 @@ let link = (function (inside, outside) {
         let reader = new FileReader();
         reader.onloadend = function () {
             img.src = reader.result;
-            img.style.width="252px";
-            img.style.height="auto";
+            img.style.width = "252px";
+            img.style.height = "auto";
         }
 
         if (file) {
@@ -511,6 +511,8 @@ let link = (function (inside, outside) {
     return {
         init: function () {
             console.log("Application has started!")
+            let name = prompt("What is your name");
+            document.querySelector(".highlight").textContent = `${name}`
             runListeners();
         }
 
