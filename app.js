@@ -243,6 +243,9 @@ let UICtrl = (function () {
                 item = e.target.parentElement.parentElement.parentElement.children[0].children[0].classList.item(e.target.parentElement.parentElement.parentElement.children[0].children[0].classList.length - 1);
             } else if (e.target.parentElement.parentElement.children[0].children[0].className.includes(string)) {
                 item = e.target.parentElement.parentElement.children[0].children[0].classList.item(e.target.parentElement.parentElement.children[0].children[0].classList.length - 1);
+                // } else if (e.target.parentElement.previousElementSibling.children[0].classList.value.includes(string)) {
+                //     data = e.target.parentElement.previousElementSibling.children[0].classList.item(e.target.parentElement.previousElementSibling.children[0].classList.length - 1);
+                // }
             }
 
             console.log(item); // returns id-0
@@ -370,25 +373,39 @@ let link = (function (inside, outside) {
         return stmt[1];
     }
 
-    // let addImages = function (id) {
-    //     let img = document.querySelectorAll(".replace-image");
-    //     let file = document.querySelector("#image-upload").files[0];
-    //     let reader = new FileReader();
-    //     reader.onloadend = function () {
-    //         img.src = reader.result;
-    //     }
-    //     if (file) {
-    //         reader.readAsDataURL(file);
-    //     } else {
-    //         img.src = "";
-    //     }
-    // }
+    let addImages = function (e) {
+        let data = inside.retreiveData();
+        let DOMStrings = outside.getDOMStrings();
 
 
-    let deleteRecipe = function () {
-        //Delete from data
+        //get the id
+        let id = match_ID_With_Recipe(e, DOMStrings.create_icon, DOMStrings.id)[1];
+        let index;
 
-        //delete from UI
+        //Get the index of the matched id.
+        for (let i = 0; i < data.length; i++) {
+            if (Number(data[i].id) === Number(id)) {
+                index = Number(id);
+            }
+        }
+
+        //Get the already created image placeholder, use QSA[index] or so to target the right card.
+        //Read the first file, onloadend works async, so when it is ready, result will  be stored, till then the if stmt will get the URl of  the file and some cool things like data modified and name of the file.
+
+        let img = document.querySelectorAll(".replace-image")[index];
+        let file = document.querySelector("#image-upload").files[0];
+        let reader = new FileReader();
+        reader.onloadend = function () {
+            img.src = reader.result;
+            img.style.width="252px";
+            img.style.height="auto";
+        }
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            img.src = "";
+        }
     }
 
 
@@ -448,9 +465,9 @@ let link = (function (inside, outside) {
             outside.showImages();
         })
 
-        document.querySelector(".browse-images").addEventListener("change", function () {
-            addImages();
-        })
+        // document.querySelector(".browse-images").addEventListener("change", function (e) {
+        //     addImages(e);
+        // })
         //Taken from Kyle Robinson FileReader YT video
         // document.querySelector('input[type="file"]').addEventListener("change", function (e) {
         //     console.log(document.querySelector('input[type="file"]').files);
@@ -469,17 +486,23 @@ let link = (function (inside, outside) {
                     document.querySelector(".modal-title").textContent = "Edit A Recipe";
                     outside.showImages();
                     let id = editRecipe(e);
+
+                    document.querySelector(".browse-images").onchange = function () {
+                        addImages(e);
+                    }
+
                     document.querySelector(DOMStrings.save_btn).onclick = function () {
                         checkID(id, outside.getUserInput());
                         //e.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
                         $('.bd-example-modal-lg').modal("hide");
                     };
+                } else {
+                    let bool = inside.deleteInternal(e);
+                    if (bool === "true") {
+                        e.target.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
+                        outside.updateCount();
+                    }
                 }
-            }
-            let bool = inside.deleteInternal(e);
-            if (bool === "true") {
-                e.target.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
-                outside.updateCount();
             }
         })
 
