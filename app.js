@@ -30,10 +30,10 @@ let internalCtrl = (function () {
             // data.cookBook.length = 0, then we subtract 1, thus undefined.
             //Solution, make id a ixed value of zero if our data array is empty.
 
-            if (data.cookBook.length === 0) {
-                id = 0;
-            } else {
+            if (data.cookBook.length > 0) {
                 id = data.cookBook[data.cookBook.length - 1].id + 1;
+            } else {
+                id = 0;
             }
 
             let condition1 = name.trim().length > 0 && description.trim().length > 0;
@@ -67,6 +67,21 @@ let internalCtrl = (function () {
 
             return duratCondition && servingsCondition;
 
+        },
+        deleteInternal: function (e) {
+            let cookBook = this.retreiveData();
+            let data;
+            if (e.target.parentElement.previousElementSibling.children[0].classList.value.includes("id-")) {
+                data = e.target.parentElement.previousElementSibling.children[0].classList.item(e.target.parentElement.previousElementSibling.children[0].classList.length - 1).split("-")[1];
+                console.log(data);
+            }
+
+            for (let i = 0; i < cookBook.length; i++) {
+                if (Number(data) === cookBook[i].id) {
+                    cookBook.splice(i, 1);
+                    return "true";
+                }
+            }
         }
     }
 
@@ -122,9 +137,13 @@ let UICtrl = (function () {
             } else {
                 let container = document.querySelector(DOMStrings.container);
 
-                html = '<div class="card mb-3 ml-3"><div class="row no-gutters"><div class="col-auto"><img src="./lasagna.jpg" class="img-fluid" width="auto" height="auto" alt=""></div><div class="col-10"><div class="card-block px-2"><h4 class="card-title font-weight-bold">%name%</h4><p class="card-text">%description%</p><p class="card-text date-c">%date%</p></div></div></div><div class="card-footer w-100 font-weight-bold p-0"><div class="d-flex justify-content-center d-flex align-items-center"><div class="col-9"><p style="display:inline">Duration: <span class="minutes">%duration%</span> minutes. Servings: <span class="servings">%servings%</span></p></div><div class="col-3"><span class="enlarge-icon"><button type="button" class="btn enlarge-icon id-%id%" style="font-size:77%;padding:0;padding-top:25%" data-target=".bd-example-modal-2g"><ion-icon name="resize" class="resize-icon"></ion-icon></button></span><span class="enlarge-icon"><ion-icon name="trash" class="delete-trash"></ion-icon></span><span class="enlarge-icon"><button type="button" class="btn enlarge-icon" style="font-size:77%;padding:0;padding-top:24%" data-target=".bd-example-modal-lg"><ion-icon name="create" class="create-icon"></ion-icon></button></span></div></div></div></div'
+                html = '<div class="card mb-3 ml-3"><div class="row no-gutters"><div class="col-auto"><img src="//placehold.it/200" class="img-fluid replace-image" width="auto" height="auto" alt=""></div><div class="col-9"><div class="card-block px-2"><h4 class="card-title font-weight-bold">%name%</h4><p class="card-text">%description%</p><p class="card-text date-c">%date%</p></div></div></div><div class="card-footer w-100 font-weight-bold p-0"><div class="d-flex justify-content-center d-flex align-items-center"><div class="col-9"><p style="display:inline">Duration: <span class="minutes">%duration%</span> minutes. Servings: <span class="servings">%servings%</span></p></div><div class="col-3"><span class="enlarge-icon"><button type="button" class="btn enlarge-icon id-%id%" style="font-size:77%;padding:0;padding-top:25%" data-target=".bd-example-modal-2g"><ion-icon name="resize" class="resize-icon"></ion-icon></button></span><span class="enlarge-icon"><ion-icon name="trash" class="delete-trash"></ion-icon></span><span class="enlarge-icon"><button type="button" class="btn enlarge-icon" style="font-size:77%;padding:0;padding-top:24%" data-target=".bd-example-modal-lg"><ion-icon name="create" class="create-icon"></ion-icon></button></span></div></div></div></div'
+
+
+                //between col-auto and end div, col-10
 
                 // '<div class="card mb-3 ml-3"><div class="row no-gutters"><div class="col-auto"><img src="./lasagna.jpg" class="img-fluid" width="auto" height="auto" alt=""></div><div class="col-10"><div class="card-block px-2"> <h4 class="card-title font-weight-bold">%name%</h4><p class="card-text">%description%</p><p class="card-text date-c">%date%</p></div></div></div><div class="card-footer w-100 font-weight-bold p-0"><div class="d-flex justify-content-center d-flex align-items-center"><div class="col-9"><p style="display:inline">Duration: <span class="minutes">%duration%</span> minutes. Servings: <span class="servings">%servings%</span></p></div><div class="col-3"><span class="enlarge-icon" style="font-size:120%;margin-top:2%"><ion-icon name="resize"></ion-icon></span><span class="enlarge-icon"><ion-icon name="trash"></ion-icon></span><span class="enlarge-icon"><ion-icon name="create" class="create-icon"></ion-icon></span></div></div></div></div>'
+
 
                 let date = this.getTodayDate();
                 html = html.replace("%name%", recipe.name);
@@ -134,8 +153,14 @@ let UICtrl = (function () {
                 html = html.replace("%date%", 'Recipe created on ' + date);
                 html = html.replace("%id%", recipe.id);
 
+                // document.querySelector(".image-replace").innerHTML = image;
                 container.insertAdjacentHTML("beforeend", html);
+
             }
+        },
+
+        uploadImage: function () {
+
         },
 
         resetUserInput: function () {
@@ -282,6 +307,16 @@ let UICtrl = (function () {
             document.querySelector(DOMStrings.directions).value = recipe.directions;
             document.querySelector(DOMStrings.duration).value = recipe.duration;
             document.querySelector(DOMStrings.servings).value = recipe.servings;
+        },
+
+        showImages: function () {
+            if (document.querySelector(".modal-title").textContent === "Edit A Recipe") {
+                console.log("bonjour, browse is open, how can I help you?")
+                document.querySelector(".browse-images").style.display = "block";
+            } else {
+                document.querySelector(".browse-images").style.display = "none";
+                console.log("Au revoir, browse has gone home")
+            }
         }
     }
 })();
@@ -308,19 +343,21 @@ let link = (function (inside, outside) {
     }
 
     let match_ID_With_Recipe = function (e, string, string2) {
+        let array = [];
         //let DOMStrings = outside.getDOMStrings(); //  let DOMStrings = outside.getDOMStrings();
         if (e.target.classList.value.includes(string)) { //DOMStrings.full_recipe
             let data = inside.retreiveData();
             let splitID = outside.getFullRecipe(e, string2);
             let id = splitID[1];
             let result = inside.searchForMatch(id, data);
-            return result;
+            array.push(result, id)
+            return array;
         }
     }
 
     let seeFullRecipe = function (e) {
         let DOMStrings = outside.getDOMStrings();
-        let stmt = match_ID_With_Recipe(e, DOMStrings.full_recipe, DOMStrings.id);
+        let stmt = match_ID_With_Recipe(e, DOMStrings.full_recipe, DOMStrings.id)[0];
         outside.getFullRecipeHelper(stmt);
     }
 
@@ -328,34 +365,62 @@ let link = (function (inside, outside) {
         let DOMStrings = outside.getDOMStrings();
         let stmt = match_ID_With_Recipe(e, DOMStrings.create_icon, DOMStrings.id);
         console.log("Edit recipe")
-        $('.bd-example-modal-lg').modal("show");
-        document.querySelector(".modal-title").textContent = "Edit A Recipe";
-        outside.editRecipeUI(stmt);
+        console.log(stmt);
+        outside.editRecipeUI(stmt[0]); //modal is filled with the clicked card's details.
+        return stmt[1];
     }
 
-    let deleteRecipe = function (e) {
-        let DOMStrings = outside.getDOMStrings();
-        let stmt = match_ID_With_Recipe(e, DOMStrings.delete_trash, DOMStrings.id);
-
-    }
-
-    let checkForMatch = function (recipe) {
-        let data = inside.retreiveData();
-
-        //check to see if passed recipe is inside the array cookbook
-        //if yes, use splice, if not, do nothing.
-    }
-
-
-
-    // let seeFullRecipe = function (e) {
-    //     let matchedRecipe = match_ID_With_Recipe(e);
-    //     outside.getFullRecipeHelper(matchedRecipe);
+    // let addImages = function (id) {
+    //     let img = document.querySelectorAll(".replace-image");
+    //     let file = document.querySelector("#image-upload").files[0];
+    //     let reader = new FileReader();
+    //     reader.onloadend = function () {
+    //         img.src = reader.result;
+    //     }
+    //     if (file) {
+    //         reader.readAsDataURL(file);
+    //     } else {
+    //         img.src = "";
+    //     }
     // }
 
 
+    let deleteRecipe = function () {
+        //Delete from data
+
+        //delete from UI
+    }
 
 
+    checkID = function (id, userInput) {
+        if (id != undefined) {
+            let data = inside.retreiveData();
+            let food;
+            for (let i = 0; i < data.length; i++) {
+                if (Number(data[i].id) === Number(id)) {
+                    console.log(data[i], data[i].id, Number(id));
+                    food = inside.add(userInput.name, userInput.description, userInput.ingredients, userInput.directions, userInput.duration, userInput.servings);
+                    let tempId = data[i].id;
+                    console.log(food, "food");
+                    if (food === undefined) {
+                        console.log("Undefined, try again")
+                    } else {
+                        data[i] = food;
+                        data[i].id = tempId;
+                        data.splice(data.length - 1, 1);
+
+                        document.querySelectorAll(".card-title")[i].textContent = data[i].name;
+                        document.querySelectorAll(".card-text")[i].textContent = data[i].description;
+                        document.querySelectorAll(".minutes")[i].textContent = data[i].duration;
+                        document.querySelectorAll(".servings")[i].textContent = data[i].servings;
+
+                        break;
+                    }
+                }
+            }
+            console.log(data);
+        }
+    }
 
 
     function runListeners() {
@@ -364,8 +429,9 @@ let link = (function (inside, outside) {
 
         document.querySelector(DOMStrings.save_btn).addEventListener("click", function () {
             if (document.querySelector(".modal-title").textContent === "Edit A Recipe") {
-                console.log("Delete first, then add")
+                console.log("Editing..... is called")
             } else {
+                console.log("addToScreen() is called")
                 addToScreen();
             }
         })
@@ -379,20 +445,44 @@ let link = (function (inside, outside) {
             console.log("Add Recipe")
             outside.resetUserInput();
             document.querySelector(".modal-title").textContent = "Add A Recipe";
+            outside.showImages();
         })
 
+        document.querySelector(".browse-images").addEventListener("change", function () {
+            addImages();
+        })
+        //Taken from Kyle Robinson FileReader YT video
+        // document.querySelector('input[type="file"]').addEventListener("change", function (e) {
+        //     console.log(document.querySelector('input[type="file"]').files);
 
-        document.addEventListener("click", function (e) {
-            if (e.target.classList.value.includes(DOMStrings.full_recipe)) {
-                seeFullRecipe(e);
-                $('.bd-example-modal-2g').modal("show")
-            } else if (e.target.parentElement.parentElement.parentElement.children[0].children[0].className.includes(DOMStrings.id)) {
-                editRecipe(e);
+        //    outside.getImage();
+        // }, false)
+
+
+        document.querySelector(DOMStrings.container).addEventListener("click", function (e) {
+            if (event.detail === 1) {
+                if (e.target.classList.value.includes(DOMStrings.full_recipe)) {
+                    seeFullRecipe(e);
+                    $('.bd-example-modal-2g').modal("show")
+                } else if (e.target.parentElement.parentElement.parentElement.children[0].children[0].className.includes(DOMStrings.id)) {
+                    $('.bd-example-modal-lg').modal("show");
+                    document.querySelector(".modal-title").textContent = "Edit A Recipe";
+                    outside.showImages();
+                    let id = editRecipe(e);
+                    document.querySelector(DOMStrings.save_btn).onclick = function () {
+                        checkID(id, outside.getUserInput());
+                        //e.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
+                        $('.bd-example-modal-lg').modal("hide");
+                    };
+                }
             }
-            // else if (e.target.className.includes(DOMStrings.delete_trash)) {
-
-            // }
+            let bool = inside.deleteInternal(e);
+            if (bool === "true") {
+                e.target.parentElement.parentElement.parentElement.parentElement.parentElement.remove();
+                outside.updateCount();
+            }
         })
+
     }
 
     return {
