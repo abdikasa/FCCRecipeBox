@@ -511,8 +511,6 @@ let link = (function (inside, outside) {
     return {
         init: function () {
             console.log("Application has started!")
-            let name = prompt("What is your name");
-            document.querySelector(".highlight").textContent = `${name}`
             runListeners();
         }
 
